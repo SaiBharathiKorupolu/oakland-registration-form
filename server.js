@@ -58,16 +58,19 @@ app.post("/send-email", async (req, res) => {
     `;
 
   try {
-    transporter.sendMail({
+    const info = await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: "New School Registration",
       html,
     });
 
+    console.log("✅ EMAIL SENT:", info.response);
+
     res.send({ success: true });
   } catch (err) {
-    res.status(500).send(err);
+    console.error("❌ EMAIL ERROR:", err);
+    res.status(500).send({ success: false });
   }
 });
 
