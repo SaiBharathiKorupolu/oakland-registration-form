@@ -1,30 +1,27 @@
 require("dotenv").config();
 
 const express = require("express");
-const nodemailer = require("nodemailer");
 const cors = require("cors");
+const { Resend } = require("resend");
 
 const app = express();
+
 app.use(
   cors({
-    origin: "*", // later restrict to your Netlify URL
+    origin: "*",
   }),
 );
 app.use(express.json());
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.get("/", (req, res) => {
   res.send("Backend is running...");
 });
+
 app.post("/send-email", async (req, res) => {
   console.log("🔥 API HIT");
+
   const d = req.body;
 
   const html = `
@@ -54,25 +51,24 @@ app.post("/send-email", async (req, res) => {
     <h3>Pickup</h3>
     ${d.pickup1_name} (${d.pickup1_relation})<br>
     ${d.pickup2_name} (${d.pickup2_relation})
-    `;
+  `;
 
   try {
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+    const response = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "oaklandvizag@gmail.com", // your email
       subject: "New School Registration",
-      html,
+      html: html,
     });
 
-    console.log("✅ EMAIL SENT:", info.response);
+    console.log("✅ EMAIL SENT:", response);
 
     res.send({ success: true });
   } catch (err) {
-    console.error("❌ EMAIL ERROR:", err);
+    console.error("❌ ERROR:", err);
     res.status(500).send({ success: false });
   }
 });
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
