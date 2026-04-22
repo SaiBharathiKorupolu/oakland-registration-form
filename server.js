@@ -56,8 +56,8 @@ app.post("/send-email", async (req, res) => {
   try {
     const response = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "oaklandvizag@gmail.com", // your email
-      subject: "New School Registration",
+      to: "oaklandglobalschool@gmail.com", // your email
+      subject: `New School Registration - ${d.child_name} - ${new Date().toISOString()}`,
       html: html,
     });
 
