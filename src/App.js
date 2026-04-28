@@ -201,19 +201,37 @@ function App() {
                 <input
                   type="radio"
                   name="program"
-                  value="LKG"
+                  value="Jr. KG"
                   onChange={handleChange}
                 />{" "}
-                LKG
+                Jr. KG
               </label>
               <label>
                 <input
                   type="radio"
                   name="program"
-                  value="UKG"
+                  value="Sr. KG"
                   onChange={handleChange}
                 />{" "}
-                UKG
+                Sr. KG
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="program"
+                  value="Grade 1"
+                  onChange={handleChange}
+                />{" "}
+                Grade 1
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="program"
+                  value="Grade 2"
+                  onChange={handleChange}
+                />{" "}
+                Grade 2
               </label>
             </div>
           </div>
